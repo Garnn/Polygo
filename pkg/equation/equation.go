@@ -106,11 +106,46 @@ func parseStr(s string) []*Monomial {
 		default:
 			last := result[len(result)-1]
 			last.Power = 1
-			last.Letter = rune(s[i])
 		}
 	}
 
 	return result
+}
+
+func (e *Equation) Simplify() {
+	maxPower := 0
+
+	// key is power, value is coefficient
+	monomials := make(map[int]int)
+
+	for _, m := range e.Monomials {
+		mod := -1
+		if m.Positive {
+			mod = 1
+		}
+
+		monomials[m.Power] += mod * m.Coefficient
+
+		if m.Power > maxPower {
+			maxPower = m.Power
+		}
+	}
+
+	newMonomials := make([]*Monomial, 0)
+	for i := maxPower; i >= 0; i-- {
+		c, contains := monomials[i]
+		if !contains || c == 0 {
+			continue
+		}
+
+		newMonomials = append(newMonomials, &Monomial{
+			Power:       i,
+			Coefficient: c,
+			Positive:    c >= 0,
+		})
+	}
+
+	e.Monomials = newMonomials
 }
 
 // String implements fmt.Stringer
@@ -126,7 +161,6 @@ func (e *Equation) String() string {
 type Monomial struct {
 	Positive    bool
 	Coefficient int
-	Letter      rune
 	Power       int
 }
 
@@ -134,7 +168,6 @@ func newMonomial() *Monomial {
 	return &Monomial{
 		Positive:    true,
 		Coefficient: 1,
-		Letter:      'x',
 		Power:       0,
 	}
 }
@@ -150,12 +183,13 @@ func (m *Monomial) String() string {
 		positiveStr = "-"
 	}
 
-	var letter rune
+	result := fmt.Sprintf("%s %d", positiveStr, m.Coefficient)
+
 	if m.Power > 0 {
-		letter = m.Letter
+		result = fmt.Sprintf("%sx^%d", result, m.Power)
 	}
 
-	return fmt.Sprintf("%s%d%c^%d", positiveStr, m.Coefficient, letter, m.Power)
+	return result
 }
 
 func (s *Monomial) ChangeSide() {

@@ -4,9 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"main/pkg/equation"
 	"os"
 	"strings"
+
+	"main/pkg/equation"
 )
 
 func main() {
@@ -24,5 +25,6 @@ func main() {
 		log.Fatalf("error parsing equation: %v", err)
 	}
 
+	result.Simplify()
 	fmt.Println(result)
 }
