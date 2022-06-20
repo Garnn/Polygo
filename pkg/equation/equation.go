@@ -59,22 +59,18 @@ func parseStr(s string) []*Monomial {
 	}
 
 	if s[0] != '-' {
-		result = append(result, &Monomial{
-			Positive: true,
-		})
+		result = append(result, newMonomial())
 	}
 
 	for i := 0; i < len(s); i++ {
 		currentLetter := s[i]
 		switch {
 		case currentLetter == '-':
-			result = append(result, &Monomial{
-				Positive: false,
-			})
+			m := newMonomial()
+			m.Positive = true
+			result = append(result, m)
 		case currentLetter == '+':
-			result = append(result, &Monomial{
-				Positive: true,
-			})
+			result = append(result, newMonomial())
 		case currentLetter == '^':
 			last := result[len(result)-1]
 			p := "0"
@@ -109,6 +105,7 @@ func parseStr(s string) []*Monomial {
 			i += len(c) - 2
 		default:
 			last := result[len(result)-1]
+			last.Power = 1
 			last.Letter = rune(s[i])
 		}
 	}
@@ -116,11 +113,30 @@ func parseStr(s string) []*Monomial {
 	return result
 }
 
+// String implements fmt.Stringer
+func (e *Equation) String() string {
+	result := ""
+	for _, i := range e.Monomials {
+		result += i.String() + " "
+	}
+
+	return fmt.Sprintf("%v = 0", result)
+}
+
 type Monomial struct {
 	Positive    bool
 	Coefficient int
 	Letter      rune
 	Power       int
+}
+
+func newMonomial() *Monomial {
+	return &Monomial{
+		Positive:    true,
+		Coefficient: 1,
+		Letter:      'x',
+		Power:       0,
+	}
 }
 
 // String implements fmt.Stringer interface.
@@ -134,7 +150,12 @@ func (m *Monomial) String() string {
 		positiveStr = "-"
 	}
 
-	return fmt.Sprintf("%s%d%c^%d", positiveStr, m.Coefficient, m.Letter, m.Power)
+	var letter rune
+	if m.Power > 0 {
+		letter = m.Letter
+	}
+
+	return fmt.Sprintf("%s%d%c^%d", positiveStr, m.Coefficient, letter, m.Power)
 }
 
 func (s *Monomial) ChangeSide() {
