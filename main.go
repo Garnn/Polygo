@@ -1,36 +1,34 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	text, err := reader.ReadString('\n')
-	if err != nil {
-		print("ReadString encountered an error: ")
-		print(err)
-	}
+	var text string
+
+	fmt.Print("Enter a number: ")
+	fmt.Scanln(&text)
+
 	text = strings.ReplaceAll(text, "\r", "")
 	text = strings.ReplaceAll(text, "\n", "")
+
 	num, err := strconv.Atoi(text)
 	if err != nil {
-		print("Atoi encountered an error: ")
-		print(err)
+		fmt.Printf("Atoi encountered an error: %v", err)
 	}
+
 	fmt.Println(bruteGetDivisors(num))
 }
 
-func bruteGetDivisors(i int) []int {
-	var divisors []int
+func bruteGetDivisors(i int) (divisors []int) {
 	for divisor := 1; divisor <= i/2; divisor += 1 {
 		if i%divisor == 0 {
 			divisors = append(divisors, divisor)
 		}
 	}
+
 	return divisors
 }
