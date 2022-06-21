@@ -67,7 +67,7 @@ func parseStr(s string) []*Monomial {
 		switch {
 		case currentLetter == '-':
 			m := newMonomial()
-			m.Positive = false
+			m.Coefficient *= -1
 			result = append(result, m)
 		case currentLetter == '+':
 			result = append(result, newMonomial())
@@ -100,7 +100,7 @@ func parseStr(s string) []*Monomial {
 				log.Panicf("Unexpected error occured - this couldn't have happend: %v", err)
 			}
 
-			last.Coefficient = coefficient
+			last.Coefficient *= coefficient
 
 			// - 1 for base 0 value of c and -1 for i++ in for assignment
 			i += len(c) - 2
@@ -119,12 +119,7 @@ func (e *Equation) Simplify() {
 	monomials := make(map[int]int)
 
 	for _, m := range e.Monomials {
-		mod := -1
-		if m.Positive {
-			mod = 1
-		}
-
-		monomials[m.Power] += mod * m.Coefficient
+		monomials[m.Power] += m.Coefficient
 
 		if m.Power > maxPower {
 			maxPower = m.Power
@@ -140,7 +135,6 @@ func (e *Equation) Simplify() {
 		newMonomials = append(newMonomials, &Monomial{
 			Power:       i,
 			Coefficient: c,
-			Positive:    c >= 0,
 		})
 	}
 
@@ -165,7 +159,6 @@ type Monomial struct {
 
 func newMonomial() *Monomial {
 	return &Monomial{
-		Positive:    true,
 		Coefficient: 1,
 		Power:       0,
 	}
@@ -175,17 +168,16 @@ func newMonomial() *Monomial {
 // it is like ToString in C# - makes fmt.Print and familiar to print
 // this as human-readable
 func (m *Monomial) String() string {
-	if m.Power == 0 {
-		return fmt.Sprint(m.Coefficient)
-	}
-	positiveStr := ""
-	if m.Positive {
-		positiveStr = "+"
-	} else {
-		positiveStr = "-"
+	var result string
+	if m.Coefficient >= 0 {
+		result += "+"
 	}
 
-	result := fmt.Sprintf("%s %d", positiveStr, m.Coefficient)
+	result += fmt.Sprintf("%d", m.Coefficient)
+
+	if m.Power == 0 {
+		return result
+	}
 
 	if m.Power > 0 {
 		result = fmt.Sprintf("%sx^%d", result, m.Power)
@@ -195,5 +187,5 @@ func (m *Monomial) String() string {
 }
 
 func (s *Monomial) ChangeSide() {
-	s.Positive = !s.Positive
+	s.Coefficient *= -1
 }
