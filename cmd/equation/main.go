@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"main/pkg/equation"
+	"github.com/garnn/Polygo/pkg/equation"
 )
 
 func main() {
