@@ -27,4 +27,5 @@ func main() {
 
 	//Check if polynomials can convert back into strings
 	fmt.Println(result)
+	//Quick git test
 }
