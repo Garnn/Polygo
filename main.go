@@ -1,17 +1,21 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/garnn/Polygo/pkg/equation"
 )
 
 func main() {
-	var text string
-
+	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter a polynomial: ")
-	fmt.Scanln(&text)
-
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatalf("Text reader encountered an error: %v", err)
+	}
 	//text = strings.ReplaceAll(text, "\r", "")
 	//text = strings.ReplaceAll(text, "\n", "")
 
@@ -21,10 +25,9 @@ func main() {
 	//}
 
 	//fmt.Println(mathelpers.BruteGetDivisors(num))
-	res, err := equation.Parse(text)
-	if err == nil {
-		fmt.Println(res)
-	} else {
-		fmt.Println(err)
+	result, err := equation.Parse(text)
+	if err != nil {
+		log.Fatalf("Equation parser encountered an error: %v", err)
 	}
+	fmt.Println(result)
 }
