@@ -48,7 +48,7 @@ func Parse(equation string) (result *Equation, err error) {
 	}
 
 	result.Monomials = leftSide
-
+	result.Simplify()
 	return result, nil
 }
 
@@ -75,6 +75,7 @@ func parseStr(s string) []*Monomial {
 			last := result[len(result)-1]
 			p := "0"
 			for j := i + 1; j < len(s) && s[j] >= '0' && s[j] <= '9'; j++ {
+				fmt.Println(s[j])
 				p += string(s[j])
 			}
 
@@ -108,7 +109,6 @@ func parseStr(s string) []*Monomial {
 			last.Power = 1
 		}
 	}
-
 	return result
 }
 
@@ -132,7 +132,6 @@ func (e *Equation) Simplify() {
 		if !contains || c == 0 {
 			continue
 		}
-
 		newMonomials = append(newMonomials, &Monomial{
 			Power:       i,
 			Coefficient: c,
@@ -148,7 +147,7 @@ func (e *Equation) String() string {
 	for _, i := range e.Monomials {
 		result += i.String() + " "
 	}
-	result = strings.TrimLeft(result, "+ ")
+	result = strings.TrimLeft(result, "+ -")
 	return fmt.Sprintf("%v = 0", result)
 }
 
@@ -175,6 +174,10 @@ func (m *Monomial) String() string {
 	}
 
 	result += fmt.Sprintf("%d", m.Coefficient)
+
+	if m.Power == 0 {
+		return result
+	}
 
 	if m.Power > 0 {
 		result = fmt.Sprintf("%sx^%d", result, m.Power)
