@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-// UnexpectedEquationError is returned by Parse if there is something wrong with equation string given
-// you can refer to this error by calling errors.Is(err, UnexpectedEquationError) in order to detect it.
-var UnexpectedEquationError = errors.New("unexpected equation")
+// ErrUnexpectedEquation is returned by Parse if there is something wrong with equation string given
+// you can refer to this error by calling errors.Is(err, ErrUnexpectedEquation) in order to detect it.
+var ErrUnexpectedEquation = errors.New("unexpected equation")
 
 type Equation struct {
 	Monomials []*Monomial
@@ -35,7 +35,7 @@ func Parse(equation string) (result *Equation, err error) {
 		leftSideStr, rightSideStr = splited[0], splited[1]
 	// wtf???
 	default:
-		return nil, UnexpectedEquationError
+		return nil, ErrUnexpectedEquation
 	}
 
 	leftSide, rightSide := parseStr(leftSideStr), parseStr(rightSideStr)
