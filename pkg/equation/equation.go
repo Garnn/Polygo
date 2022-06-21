@@ -75,6 +75,7 @@ func parseStr(s string) []*Monomial {
 			last := result[len(result)-1]
 			p := "0"
 			for j := i + 1; j < len(s) && s[j] >= '0' && s[j] <= '9'; j++ {
+				fmt.Println(s[j])
 				p += string(s[j])
 			}
 
@@ -152,7 +153,7 @@ func (e *Equation) String() string {
 	for _, i := range e.Monomials {
 		result += i.String() + " "
 	}
-	result = strings.TrimLeft(result, "+ ")
+	result = strings.TrimLeft(result, "+ -")
 	return fmt.Sprintf("%v = 0", result)
 }
 
