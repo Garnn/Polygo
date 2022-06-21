@@ -9,7 +9,7 @@ import (
 )
 
 // UnexpectedEquationError is returned by Parse if there is something wrong with equation string given
-// you cann reffer to this error by calling errors.Is(err, UnexpectedEquationError) in order to detect it.
+// you can refer to this error by calling errors.Is(err, UnexpectedEquationError) in order to detect it.
 var UnexpectedEquationError = errors.New("unexpected equation")
 
 type Equation struct {
@@ -21,7 +21,7 @@ func Parse(equation string) (result *Equation, err error) {
 	// remove all spaces - they are user-friendly but they are not necessary
 	equation = strings.ReplaceAll(equation, " ", "")
 
-	// split to right ane left sides
+	// split to right and left sides
 	splited := strings.Split(equation, "=")
 
 	var leftSideStr, rightSideStr string
@@ -40,7 +40,7 @@ func Parse(equation string) (result *Equation, err error) {
 
 	leftSide, rightSide := parseStr(leftSideStr), parseStr(rightSideStr)
 
-	// move eveerything from right to left side
+	// move everything from right to left side
 
 	for _, x := range rightSide {
 		x.ChangeSide()
