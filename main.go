@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/garnn/Polygo/pkg/mathelpers"
 )
 
 func main() {
@@ -20,15 +22,5 @@ func main() {
 		fmt.Printf("Atoi encountered an error: %v", err)
 	}
 
-	fmt.Println(bruteGetDivisors(num))
-}
-
-func bruteGetDivisors(i int) (divisors []int) {
-	for divisor := 1; divisor <= i/2; divisor += 1 {
-		if i%divisor == 0 {
-			divisors = append(divisors, divisor)
-		}
-	}
-
-	return divisors
+	fmt.Println(mathelpers.BruteGetDivisors(num))
 }
