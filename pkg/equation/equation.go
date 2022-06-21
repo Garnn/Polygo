@@ -80,7 +80,7 @@ func parseStr(s string) []*Monomial {
 
 			power, err := strconv.Atoi(p)
 			if err != nil {
-				log.Panicf("Unexpected error occured - this couldn't have happend: %v", err)
+				log.Panicf("Unexpected error occured - this couldn't have happened: %v", err)
 			}
 
 			last.Power = power
@@ -148,7 +148,7 @@ func (e *Equation) String() string {
 	for _, i := range e.Monomials {
 		result += i.String() + " "
 	}
-
+	result = strings.TrimLeft(result, "+ ")
 	return fmt.Sprintf("%v = 0", result)
 }
 
