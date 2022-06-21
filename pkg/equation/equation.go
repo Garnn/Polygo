@@ -48,7 +48,7 @@ func Parse(equation string) (result *Equation, err error) {
 	}
 
 	result.Monomials = leftSide
-
+	result.Simplify()
 	return result, nil
 }
 
@@ -108,7 +108,6 @@ func parseStr(s string) []*Monomial {
 			last.Power = 1
 		}
 	}
-
 	return result
 }
 
@@ -137,7 +136,6 @@ func (e *Equation) Simplify() {
 		if !contains || c == 0 {
 			continue
 		}
-
 		newMonomials = append(newMonomials, &Monomial{
 			Power:       i,
 			Coefficient: c,
