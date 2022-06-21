@@ -67,7 +67,7 @@ func parseStr(s string) []*Monomial {
 		switch {
 		case currentLetter == '-':
 			m := newMonomial()
-			m.Positive = true
+			m.Positive = false
 			result = append(result, m)
 		case currentLetter == '+':
 			result = append(result, newMonomial())
@@ -176,6 +176,9 @@ func newMonomial() *Monomial {
 // it is like ToString in C# - makes fmt.Print and familiar to print
 // this as human-readable
 func (m *Monomial) String() string {
+	if m.Power == 0 {
+		return fmt.Sprint(m.Coefficient)
+	}
 	positiveStr := ""
 	if m.Positive {
 		positiveStr = "+"
