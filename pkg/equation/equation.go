@@ -154,7 +154,7 @@ func (e *Equation) String() string {
 	for _, i := range e.Monomials {
 		result += i.String() + " "
 	}
-
+	result = strings.TrimLeft(result, "+ ")
 	return fmt.Sprintf("%v = 0", result)
 }
 
