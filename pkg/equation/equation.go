@@ -75,7 +75,6 @@ func parseStr(s string) []*Monomial {
 			last := result[len(result)-1]
 			p := "0"
 			for j := i + 1; j < len(s) && s[j] >= '0' && s[j] <= '9'; j++ {
-				fmt.Println(s[j])
 				p += string(s[j])
 			}
 
