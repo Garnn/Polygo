@@ -13,12 +13,17 @@ import (
 //TODO: Maybe try to do the factorization approach with some fancy, slightly better than brute force algorithm
 
 func BruteGetDivisors(i int) (divisors []int) {
-	for divisor := 1; divisor <= i/2; divisor += 1 {
+	if i < 0 {
+		i *= -1
+	}
+	for divisor := 1; divisor <= i/2; divisor++ {
 		if i%divisor == 0 {
 			divisors = append(divisors, divisor)
+			divisors = append(divisors, -divisor)
 		}
 	}
-
+	divisors = append(divisors, i)
+	divisors = append(divisors, -i)
 	return divisors
 }
 
