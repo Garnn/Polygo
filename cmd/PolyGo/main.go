@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/garnn/Polygo/pkg/equation"
+	"github.com/garnn/Polygo/pkg/polynomials"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
 	text = strings.ReplaceAll(text, "\n", "")
 	text = strings.ReplaceAll(text, "\r", "")
-	result, err := equation.Parse(text)
+	result, err := polynomials.Parse(text)
 	if err != nil {
 		log.Fatalf("error parsing equation: %v", err)
 	}

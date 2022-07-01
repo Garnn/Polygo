@@ -1,4 +1,4 @@
-package equation
+package polynomials
 
 import (
 	"errors"

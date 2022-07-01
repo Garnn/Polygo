@@ -22,6 +22,8 @@ func BruteGetDivisors(i int) (divisors []int) {
 	return divisors
 }
 
+//This function takes a calculated root, and spits back a human-readable version of it as a string
+
 func MakeRootReadable(i float64) (output string) {
 	orig_num := math.Round(i * i)
 	factors := mathutil.FactorInt(uint32(orig_num))
