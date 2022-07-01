@@ -151,7 +151,6 @@ func (e *Equation) String() string {
 }
 
 type Monomial struct {
-	Positive    bool
 	Coefficient int
 	Power       int
 }
