@@ -15,7 +15,7 @@ func convIntArrayToFloat32Array(array []int) (output []float64) {
 
 //This function takes an Equation and attempts to find all possible solutions,
 //some solutions may not be valid and must be weeded out with the checkValidSolutions helper function
-func FindPotentialSolutions(equation *Equation) (solutions []float64) {
+func findPotentialSolutions(equation *Equation) (solutions []float64) {
 	divisors_1int := mathelpers.BruteGetDivisors(equation.Monomials[len(equation.Monomials)-1].Coefficient)
 	divisors_2int := mathelpers.BruteGetDivisors(equation.Monomials[0].Coefficient)
 	divisors_1 := convIntArrayToFloat32Array(divisors_1int)
@@ -47,7 +47,7 @@ func FindPotentialSolutions(equation *Equation) (solutions []float64) {
 }
 
 //This function takes an Equation, and a list of possible solutions, and weeds out the wrong ones
-func CheckValidSolutions(equation *Equation, posSolutions []float64) (solutions []float64) {
+func checkValidSolutions(equation *Equation, posSolutions []float64) (solutions []float64) {
 	var evaluatedAnswer float64
 	for _, sol := range posSolutions {
 		evaluatedAnswer = 0
@@ -59,4 +59,19 @@ func CheckValidSolutions(equation *Equation, posSolutions []float64) (solutions 
 		}
 	}
 	return solutions
+}
+func hornerize(equation *Equation, solution1 float64) (newEquation Equation, solution2 float64) {
+	curr := solution1
+	for i, elem := range equation.Monomials {
+		newMono := newMonomial()
+		newMono.Coefficient = int(curr)
+
+	}
+}
+
+func SolveEquation(equation *Equation) (finalSolutions []float64) {
+	dirtySolutions := findPotentialSolutions(equation)
+	cleanSolutions := checkValidSolutions(equation, dirtySolutions)
+	currEquation := *equation
+
 }
