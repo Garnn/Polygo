@@ -74,11 +74,11 @@ func parseStr(s string) []*Monomial {
 		case currentLetter == '^':
 			last := result[len(result)-1]
 			p := "0"
-			for j := i + 1; j < len(s) && s[j] >= '0' && s[j] <= '9'; j++ {
+			for j := i + 1; j < len(s) && ((s[j] >= '0' && s[j] <= '9') || s[j] == '.'); j++ {
 				p += string(s[j])
 			}
 
-			power, err := strconv.Atoi(p)
+			power, err := strconv.ParseFloat(p, 64)
 			if err != nil {
 				log.Panicf("Unexpected error occured - this couldn't have happened: %v", err)
 			}
@@ -87,14 +87,14 @@ func parseStr(s string) []*Monomial {
 
 			// -1 for base 0 in p value
 			i += len(p) - 1
-		case currentLetter >= '0' && currentLetter <= '9':
+		case (currentLetter >= '0' && currentLetter <= '9') || currentLetter == '.':
 			last := result[len(result)-1]
 			c := "0"
-			for j := i; j < len(s) && s[j] >= '0' && s[j] <= '9'; j++ {
+			for j := i; j < len(s) && ((s[j] >= '0' && s[j] <= '9') || s[j] == '.'); j++ {
 				c += string(s[j])
 			}
 
-			coefficient, err := strconv.Atoi(c)
+			coefficient, err := strconv.ParseFloat(c, 64)
 			if err != nil {
 				log.Panicf("Unexpected error occured - this couldn't have happend: %v", err)
 			}
@@ -112,10 +112,10 @@ func parseStr(s string) []*Monomial {
 }
 
 func (e *Equation) Simplify() {
-	maxPower := 0
+	var maxPower float64 = 0
 
 	// key is power, value is coefficient
-	monomials := make(map[int]int)
+	monomials := make(map[float64]float64)
 
 	for _, m := range e.Monomials {
 		monomials[m.Power] += m.Coefficient
@@ -152,8 +152,8 @@ func (e *Equation) String() string {
 
 type Monomial struct {
 	Positive    bool
-	Coefficient int
-	Power       int
+	Coefficient float64
+	Power       float64
 }
 
 func newMonomial() *Monomial {
@@ -172,14 +172,14 @@ func (m *Monomial) String() string {
 		result += "+"
 	}
 
-	result += fmt.Sprintf("%d", m.Coefficient)
+	result += fmt.Sprintf("%v", m.Coefficient)
 
 	if m.Power == 0 {
 		return result
 	}
 
 	if m.Power > 0 {
-		result = fmt.Sprintf("%sx^%d", result, m.Power)
+		result = fmt.Sprintf("%sx^%v", result, m.Power)
 	}
 
 	return result
